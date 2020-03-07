@@ -1,19 +1,34 @@
 const cvs = document.getElementById("tetris");
 const ctx = cvs.getContext("2d");
+const cvsNext = document.getElementById("nextPiece");
+const ctxNext = cvsNext.getContext("2d");
 const scoreElement = document.getElementById("score");
 
 const ROW = 20; // size of how many squares in each row
 const COL = COLUMN = 10; // size of how many squares in each column
 const SQ = SQUARE = 20; // size of each square(in pixels)
-const VACANT = "WHITE"; // color of empty square
+const VACANT = "BLACK"; // color of empty square
+const ROWNEXT = 4;
+const COLNEXT = 4;
+const LINECOLOR = "GREY"
 
 // draw a square in the canvas with unit SQ
 function drawSquare(x,y,color){
     ctx.fillStyle = color;
     ctx.fillRect(x*SQ,y*SQ,SQ,SQ);
 
-    ctx.strokeStyle = "BLACK";
+    ctx.strokeStyle = LINECOLOR;
     ctx.strokeRect(x*SQ,y*SQ,SQ,SQ);
+
+}
+
+// draw a square in the next canvas with unit SQ
+function drawSquareNext(x,y,color){
+    ctxNext.fillStyle = color;
+    ctxNext.fillRect(x*SQ,y*SQ,SQ,SQ);
+
+    ctxNext.strokeStyle = LINECOLOR;
+    ctxNext.strokeRect(x*SQ,y*SQ,SQ,SQ);
 }
 
 
@@ -27,6 +42,16 @@ for(r = 0; r < ROW; r++){
     }
 }
 
+// create the next board
+
+let boardNext = [];
+for(r = 0; r < ROWNEXT; r++){
+    boardNext[r] = [];
+    for(c = 0; c < COLNEXT; c++){
+        boardNext[r][c] = VACANT;
+    }
+}
+
 // draw the board to canvas
 function drawBoard(){
     for(r = 0; r < ROW; r++){
@@ -36,7 +61,19 @@ function drawBoard(){
     }
 }
 
+// draw the next board to canvas
+function drawBoardNext(){
+    for(r = 0; r < ROWNEXT; r++){
+        for(c = 0; c < COLNEXT; c++){
+            drawSquareNext(c,r,boardNext[r][c]);
+        }
+    }
+}
+
+// initialize the board and next board
+
 drawBoard();
+drawBoardNext();
 
 // the pieces and the colors
 
@@ -57,9 +94,21 @@ function randomPiece(){
     return new Piece(PIECES[r][0],PIECES[r][1]);
 }
 
+function randomPieceNext(){
+    let r = randomN = Math.floor(Math.random() * PIECES.length) // 0 through 6
+    return new Piece(PIECES[r][0],PIECES[r][1]);
+}
+
 // initiate a piece
 
 let p = randomPiece();
+
+// initiate next up piece
+
+let p2 = randomPiece();
+p2.x = 0;
+p2.y = 0;
+drawNext();
 
 // draw the Object Piece
 
@@ -88,6 +137,8 @@ Piece.prototype.fill = function(color){
     }
 }
 
+
+
 // draw a piece to the board
 
 Piece.prototype.draw = function(){
@@ -110,8 +161,23 @@ Piece.prototype.moveDown = function(){
     } else{
         // we lock the piece and generate a new piece
         this.lock();
-        p = randomPiece();
+        p = p2;
+        p2 = randomPiece();
+        clearBoardNext();
+        drawNext();
     }
+}
+
+console.log(p2);
+console.log(boardNext);
+
+function clearBoardNext(){
+  for(r = 0; r < ROWNEXT; r++){
+      boardNext[r] = [];
+      for(c = 0; c < COLNEXT; c++){
+          boardNext[r][c] = VACANT;
+      }
+  }
 }
 
 // move right the piece on right arrow key
@@ -236,6 +302,18 @@ Piece.prototype.collision = function(x,y,piece){
         }
     }
     return false;
+}
+
+function drawNext(){
+  for(r = 0; r < p2.activeTetrimino.length; r++){
+      for(c = 0; c < p2.activeTetrimino.length; c++){
+          // we draw only the occupied squares
+          if(p2.activeTetrimino[r][c]){
+              boardNext[r][c] = p2.color;
+          }
+      }
+  }
+  drawBoardNext();
 }
 
 
