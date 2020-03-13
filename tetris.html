@@ -31,20 +31,34 @@
 
     <section id="main">
       <div class="container">
-        <article id="main-col">
+        <!-- <article id="main-col"> -->
           <h2 class="page-title">Tetris Game</h2>
           <p>Tetris was one of my favorite games growing up. I decided to do a
             small project to add to my website to showcase some JavaScript
             skills. Hopefully more games to come!
           </p>
-          <canvas id="tetris" width="200" height="400"></canvas>
-          <canvas id="nextPiece" width="80" height="80"></canvas>
-          <div>
+          <div id ="scoreText">
               Score : <div id="score">0</div>
           </div>
-          <script src="tetriminos.js"></script>
-          <script src="tetris.js"></script>
-     </section>
+          <div id="next">
+            Next Piece
+          </div>
+
+
+
+          <canvas id="tetris" width="200" height="400"></canvas>
+          <canvas id="nextPiece" width="80" height="80"></canvas>
+          <div id="darkMode">
+            Dark Mode
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="darkCheck">
+            <span class="slider round"></span>
+          </label>
+    </section>
+
+
+
 
           <section id="newsletter">
             <div class="container">
@@ -60,5 +74,7 @@
           <footer>
             <p>Noredlac.win, Copyright &copy; 2019</p>
           </footer>
+          <script src="tetriminos.js"></script>
+          <script src="tetris.js"></script>
         </body>
       </html>
