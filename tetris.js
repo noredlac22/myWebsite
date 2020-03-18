@@ -254,6 +254,16 @@ let score = 0
 // }
 // let boardOneZero[][] = zeros([ROW,COL]);
 
+function drawCurrent(){
+  for(r = 0; r < this.activeTetrimino.length; r++){
+      for(c = 0; c < this.activeTetrimino.length; c++){
+          // we draw only the occupied squares
+          if(this.activeTetrimino[r][c]){
+              drawSquare(this.x + c, this.y + r, color);
+          }
+      }
+  }
+}
 
 
 Piece.prototype.lock = function(){
@@ -325,6 +335,7 @@ Piece.prototype.lock = function(){
     }
     clearBoard();
     drawBoard();
+    p.draw();
     console.log(VACANT);
 
 // darkmode for next
@@ -348,6 +359,7 @@ Piece.prototype.lock = function(){
     }
     clearBoard();
     drawBoard();
+    p.draw();
 
 // darkmode for next
 
